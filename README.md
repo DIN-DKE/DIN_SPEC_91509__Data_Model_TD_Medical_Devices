@@ -1,1 +1,1 @@
-# DIN_SPEC_91509__Technische_Dokumentation_Medizinprodukte
+# DIN_SPEC_91509_Datenmodell_TD_Medizinprodukte
