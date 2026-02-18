@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Release 1 2025-10-08: Version accompagnying first published version of DIN SPEC 91509
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:kts="http://mdku.digital/ns" elementFormDefault="qualified" attributeFormDefault="unqualified" vc:minVersion="1.1">
+	<xs:element name="kts">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="kt" minOccurs="1" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>MDKU Knowledge Topic. Namespace kt omitted.</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="provision" minOccurs="1" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Provision(s) of the topic, i.e. the actual places in MDR, IVDR... where the requirements are found</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="source" minOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Tag names and content loosely aligned with structure used by DIN / Nautos / SMART Standards as of 04/2024</xs:documentation>
+												<!--  -->
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:annotation>
+														<xs:documentation>
+											Could be any combination of identification of a certain location of regulatory or scientific information!
+											- documentID: unique identifier of documents using resolveable data, such as database keys
+											- elementID: unique identifier of fragment inside a document using given identifiers in the given context of the document, suich as a chapter number, or a line.
+											- location: pointer to the actual fragment inside the document, such as xpath to a XML file fragment 
+											- lang: Language of the source
+											Other data can be included as fit!
+											</xs:documentation>
+													</xs:annotation>
+													<xs:element name="documentid" type="xs:string"/>
+													<xs:element name="elementid" type="xs:string"/>
+													<xs:element name="location" type="xs:string"/>
+													<xs:element name="lang" type="xs:language"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="data" type="xs:string" minOccurs="0" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Content data may not be available due to licencing issues. Data type is xhtml (must be defined!)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="heading" type="xs:string" minOccurs="0" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Heading / Chapter name of the provision if applicable. Data type is xhtml (must be defined!)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="interpretation" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Interpretation of this provision as created by the working groups. Here some additional information (interpretation by whom...) may be included. Data type is xhtml.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:choice>
+									<xs:attribute name="p_id" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="relation" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Refers to other KTs by ID. Note: technically this should be a separate entity as a n:m relation. For reasons of self-containment of KTs the relation entries shall be included in the actual KTs rather than in a separate file therefore creating a violation of normalization principles  - but easily parseable by any application program.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="semantic" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Comment or explanation of relation, i. e. the semantic relation to another topic(s)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="type">
+											<xs:annotation>
+												<xs:documentation>Type of relation: "contributes","is mentionned in","is defined in ", "is child of", "in collection"</xs:documentation>
+											</xs:annotation>
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="contributes"/>
+													<xs:enumeration value="is mentioned in"/>
+													<xs:enumeration value="is defined in "/>
+													<xs:enumeration value="is child of"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="relation_key" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>foreign key: points to kt_ID of another knowledge topic (kt)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="content" minOccurs="1" maxOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Actual content of the KT. The tags below this refer to the Polarion field names.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>(Short) title for the kt. Shall be unique in the set of kts. Data type is xhtml (must be defined!)</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="definition" type="xs:string" minOccurs="1" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Definition derived from the provision(s) as to be used</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="summary" type="xs:string" minOccurs="1" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Summary / abstract / catchphrase of this topic. This is the abbreviated text "chunk" which is included in the output when compiling units into larger structures!</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Description of the topic for indexing uses</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="application">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="applicability" type="xs:string"/>
+													<xs:element name="limitations" type="xs:string"/>
+													<xs:element name="relevance">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="mandatory"/>
+																<xs:enumeration value="optional"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="evidence">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="regulatory"/>
+																<xs:enumeration value="MDKU-specific"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="background" type="xs:string"/>
+										<xs:element name="justification" type="xs:string"/>
+										<xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+										<xs:element name="t_attribute">
+											<xs:annotation>
+												<xs:documentation>refers to the "attributes" defined in Polarion. May need another name.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="name"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="data">
+											<xs:complexType>
+												<xs:attribute name="datatype">
+													<xs:annotation>
+														<xs:documentation>Which type (text, multiline, #PCDATA, number...) shall the unit have to fulfill the required content of the topic?</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="t_id" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="unit" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Proposed expansion of model: give an example of how the topic shall be used as a unit, maybe as a word- or XML template</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="template" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Template for this KT to form a unit. This tag may most likely contain XML or other strutured data!</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ifu" type="xs:string" minOccurs="0" maxOccurs="1">
+											<xs:annotation>
+												<xs:documentation>Instructions for use for this template</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="expected_content" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>What shall be contained here?</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:choice>
+									<xs:attribute name="u_id" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="meta" minOccurs="1" maxOccurs="1">
+								<xs:annotation>
+									<xs:documentation>metadata of this KT: versionning, release status, ...</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="version" type="xs:string"/>
+										<xs:element name="KT_version" type="xs:string"/>
+										<xs:element name="status">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="work"/>
+													<xs:enumeration value="review"/>
+													<xs:enumeration value="released"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="release_date" type="xs:date"/>
+										<xs:element name="version_comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="internal" minOccurs="0" maxOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Data for internal use. Not for publishing!</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:choice>
+										<xs:element name="owner_MDKU" type="xs:string" minOccurs="1" maxOccurs="1"/>
+										<xs:element name="review" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:choice>
+													<xs:element name="review_by" type="xs:string"/>
+													<xs:element name="review_summary" type="xs:string"/>
+													<xs:element name="review_result">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="pass"/>
+																<xs:enumeration value="fail"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+													<xs:element name="review_src">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="external"/>
+																<xs:enumeration value="internal"/>
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
+												</xs:choice>
+											</xs:complexType>
+										</xs:element>
+									</xs:choice>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="lang" type="xs:language" use="required">
+							<xs:annotation>
+								<xs:documentation>Language of the KT instance. The same KT may exist in different languages (with probably identical content!)</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="kt_id" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>Refers to the Polarion Public ID</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="kt_issuer" type="xs:string">
+							<xs:annotation>
+								<xs:documentation>Issuer of the KT. Evaluates to constant 'MDKU'</xs:documentation>
+							</xs:annotation>
+							<!--sollte sein:  use="required" -->
+						</xs:attribute>
+						<xs:attribute name="kt_uid" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>Unique (global) ID of this instance of the KT (used for version tracking)</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="kt_scope" type="xs:string" use="required">
+							<xs:annotation>
+								<xs:documentation>Indicates, whether this KT is a collection / a superordinated subject of other KTs, or... </xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
