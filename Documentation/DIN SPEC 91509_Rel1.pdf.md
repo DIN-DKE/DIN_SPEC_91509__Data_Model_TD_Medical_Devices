@@ -1,0 +1,1 @@
+https://www.dinmedia.de/en/technical-rule/din-spec-91509/398588664
