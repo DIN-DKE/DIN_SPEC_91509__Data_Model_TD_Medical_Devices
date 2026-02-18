@@ -1,1 +1,1 @@
-# DIN SPEC 91509 Datenmodell TD Medizinprodukte
+# DIN SPEC 91509 Data Model TD Medical Devices
